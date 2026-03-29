@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
 #include "GameFramework/Character.h"
 #include "BlasterCharacter.generated.h"
 
@@ -15,13 +17,26 @@ public:
 	
 	ABlasterCharacter();
 	
-	virtual void Tick(float DeltaTime) override;
-	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputMappingContext* InputMapping;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* MoveAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* LookAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* JumpAction;
 
 protected:
 	
 	virtual void BeginPlay() override;
+	
+	void Move(const FInputActionInstance& Instance);
+	void Look(const FInputActionInstance& Instance);
 
 private:
 	

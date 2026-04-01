@@ -34,7 +34,6 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Look);
 		Input->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 	}
-
 }
 
 void ABlasterCharacter::BeginPlay()

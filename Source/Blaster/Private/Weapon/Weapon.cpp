@@ -1,7 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Weapon/Weapon.h"
+
+#include "Character/BlasterCharacter.h"
 #include "Components/SphereComponent.h"
+#include "Components/WidgetComponent.h"
 
 AWeapon::AWeapon()
 {
@@ -19,6 +22,9 @@ AWeapon::AWeapon()
 	AreaSphere->SetupAttachment(RootComponent);
 	AreaSphere->SetCollisionResponseToAllChannels(ECR_Ignore);							// ignore all channels by default
 	AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);			// collision off by default, enabled only on server
+	
+	PickupWidget = CreateDefaultSubobject<UWidgetComponent>("PickupWidget");
+	PickupWidget->SetupAttachment(WeaponMesh);
 
 }
 
@@ -30,6 +36,20 @@ void AWeapon::BeginPlay()
 	{
 		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);	// enable collision on server
 		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);	// detect when pawns overlap the pickup sphere
+		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);
+	}
+	if (PickupWidget)
+	{
+		PickupWidget->SetVisibility(false);
+	}
+}
+
+void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
+	if (BlasterCharacter && PickupWidget)
+	{
+		PickupWidget->SetVisibility(true);
 	}
 }
 

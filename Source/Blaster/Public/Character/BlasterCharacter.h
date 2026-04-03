@@ -6,6 +6,7 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "GameFramework/Character.h"
+#include "Weapon/Weapon.h"
 #include "BlasterCharacter.generated.h"
 
 UCLASS()
@@ -17,7 +18,9 @@ public:
 	
 	ABlasterCharacter();
 	
+	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMapping;
@@ -30,6 +33,8 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* JumpAction;
+	
+	void SetOverlappingWeapon(AWeapon* Weapon);
 
 protected:
 	
@@ -48,4 +53,10 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* OverheadWidget;
+	
+	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
+	class AWeapon* OverlappingWeapon;
+	
+	UFUNCTION()
+	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 };

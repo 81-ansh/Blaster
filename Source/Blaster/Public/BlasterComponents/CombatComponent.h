@@ -7,6 +7,7 @@
 #include "CombatComponent.generated.h"
 
 class AWeapon;
+class ABlasterCharacter;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BLASTER_API UCombatComponent : public UActorComponent
@@ -29,10 +30,10 @@ protected:
 
 private:
 	
+	UPROPERTY()
 	ABlasterCharacter* Character;
+	
+	UPROPERTY()
 	AWeapon* EquippedWeapon;
 	
-	
-
-		
 };

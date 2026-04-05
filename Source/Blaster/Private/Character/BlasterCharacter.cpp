@@ -122,7 +122,22 @@ void ABlasterCharacter::Look(const FInputActionInstance& Instance)
 
 void ABlasterCharacter::EquipButtonPressed()
 {
-	if (Combat && HasAuthority())
+	if (Combat)
+	{
+		if (HasAuthority())
+		{
+			Combat->EquipWeapon(OverlappingWeapon);									// Server — equip directly
+		}
+		else
+		{
+			ServerEquipButtonPressed();												// Client — send equip request to server via RPC
+		}
+	}
+}
+
+void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
+{
+	if (Combat)
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
 	}

@@ -27,16 +27,16 @@ void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
-	if (Character == nullptr || WeaponToEquip == nullptr) return;
+	if (Character == nullptr || WeaponToEquip == nullptr) return;												// Check if the Character and the Weapon is Valid
 	
 	EquippedWeapon = WeaponToEquip;
-	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);
-	const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket"));
+	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);													// Update weapon state to equipped
+	const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket"));	// Get the hand socket from the character mesh
 	if (HandSocket)
 	{
-		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());
+		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());									// Attach weapon to the hand socket
 	}
-	EquippedWeapon->SetOwner(Character);
-	EquippedWeapon->ShowPickupWidget(false);
+	EquippedWeapon->SetOwner(Character);																		// Set the character as the owner of the weapon
+	
 }
 

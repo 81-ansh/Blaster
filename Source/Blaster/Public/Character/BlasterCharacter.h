@@ -39,6 +39,7 @@ public:
 	UInputAction* EquipAction;
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
+	bool IsWeaponEquipped();
 
 protected:
 	

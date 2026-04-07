@@ -41,8 +41,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* CrouchAction;
 	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* AimAction;
+	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
+	bool IsAiming();
 
 protected:
 	
@@ -52,6 +56,8 @@ protected:
 	void Look(const FInputActionInstance& Instance);
 	void EquipButtonPressed();
 	void CrouchButtonPressed();
+	void AimButtonPressed();
+	void AimButtonReleased();
 
 private:
 	

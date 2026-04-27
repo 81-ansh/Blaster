@@ -5,6 +5,7 @@
 
 #include "Character/BlasterCharacter.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Weapon/Weapon.h"
 
@@ -25,6 +26,15 @@ void UCombatComponent::SetAiming(bool bIsAiming)
 	bAiming = bIsAiming;
 	ServerSetAiming(bIsAiming);
 	
+}
+
+void UCombatComponent::OnRep_EquippedWeapon()
+{
+	if (EquippedWeapon && Character)
+	{
+		Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
+		Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
+	}
 }
 
 void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
@@ -58,6 +68,7 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());									// Attach weapon to the hand socket
 	}
 	EquippedWeapon->SetOwner(Character);																		// Set the character as the owner of the weapon
-	
+	Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
+	Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
 }
 

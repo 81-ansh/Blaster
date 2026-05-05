@@ -2,7 +2,6 @@
 
 
 #include "BlasterComponents/CombatComponent.h"
-
 #include "Character/BlasterCharacter.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -13,19 +12,37 @@ UCombatComponent::UCombatComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
 	
+	BaseWalkSpeed = 600.f;
+	AimWalkSpeed = 400.f;
 }
 
 void UCombatComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (Character)
+	{
+		Character->GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;											// setting MaxWalkSpeed = BaseWalkSpeed
+	}
 }
 
 void UCombatComponent::SetAiming(bool bIsAiming)
 {
 	bAiming = bIsAiming;
 	ServerSetAiming(bIsAiming);
-	
+	if (Character)
+	{
+		Character->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;					// slow the character if aiming
+	}
+}
+
+void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
+{
+	bAiming = bIsAiming;
+	if (Character)
+	{
+		Character->GetCharacterMovement()->MaxWalkSpeed = bIsAiming ? AimWalkSpeed : BaseWalkSpeed;					// slow the character if aiming
+	}
 }
 
 void UCombatComponent::OnRep_EquippedWeapon()
@@ -35,11 +52,6 @@ void UCombatComponent::OnRep_EquippedWeapon()
 		Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
 		Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
 	}
-}
-
-void UCombatComponent::ServerSetAiming_Implementation(bool bIsAiming)
-{
-	bAiming = bIsAiming;
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

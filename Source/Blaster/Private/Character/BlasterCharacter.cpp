@@ -91,6 +91,12 @@ void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon) // Only called on 
 	}
 }
 
+AWeapon* ABlasterCharacter::GetEquippedWeapon()
+{
+	if (Combat == nullptr) return nullptr;
+	return Combat->EquippedWeapon;
+}
+
 void ABlasterCharacter::BeginPlay()
 {
 	Super::BeginPlay();

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "BlasterTypes/TurningInPlace.h"
 #include "GameFramework/Character.h"
 #include "Weapon/Weapon.h"
 #include "BlasterCharacter.generated.h"
@@ -50,6 +51,7 @@ public:
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	AWeapon* GetEquippedWeapon();
+	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
 
 protected:
 	
@@ -89,4 +91,7 @@ private:
 	float AO_Yaw;
 	float AO_Pitch;
 	FRotator StartingAimRotation;
+	
+	ETurningInPlace TurningInPlace;
+	void TurnInPlace(float DeltaTime);
 };

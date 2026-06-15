@@ -38,6 +38,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
+	GetCharacterMovement()->RotationRate = FRotator(0.f, 850.f, 0.f);
 	
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;
 	SetNetUpdateFrequency(66.f);
@@ -61,7 +62,7 @@ void ABlasterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	{
 		Input->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Move);
 		Input->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABlasterCharacter::Look);
-		Input->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		Input->BindAction(JumpAction, ETriggerEvent::Started, this, &ABlasterCharacter::Jump);
 		Input->BindAction(EquipAction, ETriggerEvent::Started, this, &ABlasterCharacter::EquipButtonPressed);
 		Input->BindAction(CrouchAction, ETriggerEvent::Started, this, &ABlasterCharacter::CrouchButtonPressed);
 		Input->BindAction(AimAction, ETriggerEvent::Started, this, &ABlasterCharacter::AimButtonPressed);
@@ -231,6 +232,18 @@ void ABlasterCharacter::AimOffset(float DeltaTime)
 		FVector2D InRange (270.f, 360.f);
 		FVector2D OutRange (-90.f, 0.f);
 		AO_Pitch = FMath::GetMappedRangeValueClamped(InRange, OutRange, AO_Pitch);
+	}
+}
+
+void ABlasterCharacter::Jump()
+{
+	if (bIsCrouched)
+	{
+		UnCrouch();
+	}
+	else
+	{
+		Super::Jump();
 	}
 }
 

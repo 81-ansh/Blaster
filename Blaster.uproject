@@ -76,6 +76,10 @@
 		{
 			"Name": "AvfMedia",
 			"Enabled": false
+		},
+		{
+			"Name": "QOO_RootBoneAdder",
+			"Enabled": false
 		}
 	],
 	"TargetPlatforms": [

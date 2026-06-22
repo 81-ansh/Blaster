@@ -58,12 +58,25 @@ void UCombatComponent::FireButtonPressed(bool bPressed)
 {
 	bFireButtonPressed = bPressed;
 	
+	if (bFireButtonPressed)
+	{
+		ServerFire();
+	}
+}
+
+void UCombatComponent::MulticastFire_Implementation()
+{
 	if (EquippedWeapon == nullptr) return;
-	if (Character && bFireButtonPressed)
+	if (Character)
 	{
 		Character->PlayFireMontage(bAiming);
 		EquippedWeapon->Fire();
 	}
+}
+
+void UCombatComponent::ServerFire_Implementation()
+{
+	MulticastFire();
 }
 
 void UCombatComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

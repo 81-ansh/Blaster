@@ -80,6 +80,10 @@
 		{
 			"Name": "QOO_RootBoneAdder",
 			"Enabled": false
+		},
+		{
+			"Name": "CascadeToNiagaraConverter",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "NiagaraComponent.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
@@ -28,5 +29,10 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
+	
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* Tracer;
+	
+	class UNiagaraComponent* TracerComponent;
 
 };

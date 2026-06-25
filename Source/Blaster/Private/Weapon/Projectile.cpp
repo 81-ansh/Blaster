@@ -3,12 +3,14 @@
 
 #include "Weapon/Projectile.h"
 
+#include "NiagaraFunctionLibrary.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
 AProjectile::AProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
 	
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
 	SetRootComponent(CollisionBox);
@@ -26,6 +28,18 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (Tracer)
+	{
+		TracerComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
+			Tracer,
+			CollisionBox,
+			FName(),
+			GetActorLocation(),
+			GetActorRotation(),
+			EAttachLocation::KeepWorldPosition,
+			true
+		);
+	}
 }
 
 void AProjectile::Tick(float DeltaTime)

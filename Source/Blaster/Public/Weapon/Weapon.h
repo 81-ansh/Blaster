@@ -7,6 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+class UTexture2D;
+
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
 {
@@ -34,6 +36,25 @@ public:
 	void SetWeaponState(EWeaponState State);
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
 	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+	
+	/*
+	 * Textures for the weapon Crosshairs
+	 */
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairCenter; 
+
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairLeft; 
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairRight; 
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairTop; 
+	
+	UPROPERTY(EditAnywhere, Category = "Crosshairs")
+	TObjectPtr<UTexture2D> CrosshairBottom;
 	
 protected:
 	
@@ -67,4 +88,5 @@ private:
 
 	UFUNCTION()
 	void OnRep_WeaponState();
+	
 };

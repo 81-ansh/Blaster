@@ -80,4 +80,13 @@ private:
 	
 	FVector HitTarget;
 	
+	/*
+	 * Aiming and FOV
+	 */
+	
+	float DefaultFOV;										// field of view when not aiming
+	float CurrentFOV;
+	
+	void InterpFOV(float DeltaTime);
+	
 };

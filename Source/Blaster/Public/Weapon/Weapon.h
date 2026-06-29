@@ -27,15 +27,6 @@ class BLASTER_API AWeapon : public AActor
 public:	
 	
 	AWeapon();
-
-	virtual void Tick(float DeltaTime) override;
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
-	void ShowPickupWidget(bool bShowWidget);
-	virtual void Fire(const FVector& HitTarget);
-	
-	void SetWeaponState(EWeaponState State);
-	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
-	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
 	
 	/*
 	 * Textures for the weapon Crosshairs
@@ -55,6 +46,27 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "Crosshairs")
 	TObjectPtr<UTexture2D> CrosshairBottom;
+	
+	/*
+	 * Zoomed FOV while aiming
+	 */
+	
+	UPROPERTY(EditAnywhere)
+	float ZoomedFOV = 30.f;
+	
+	UPROPERTY(EditAnywhere)
+	float ZoomInterpSpeed = 20.f;
+	
+	virtual void Tick(float DeltaTime) override;
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	void ShowPickupWidget(bool bShowWidget);
+	virtual void Fire(const FVector& HitTarget);
+	
+	void SetWeaponState(EWeaponState State);
+	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
+	FORCEINLINE USkeletalMeshComponent* GetWeaponMesh() const { return WeaponMesh; }
+	FORCEINLINE	float GetZoomedFOV() const { return ZoomedFOV; }
+	FORCEINLINE	float GetZoomInterpSpeed() const { return ZoomInterpSpeed; }
 	
 protected:
 	

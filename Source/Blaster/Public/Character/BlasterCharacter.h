@@ -27,6 +27,9 @@ public:
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
 	
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastHit();
+	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMapping;
 	
@@ -76,6 +79,7 @@ protected:
 	virtual void Jump() override;
 	void FireButtonPressed();
 	void FireButtonReleased();
+	void PlayHitReactMontage();
 
 private:
 	
@@ -111,6 +115,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	class UAnimMontage* FireWeaponMontage;
 	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	class UAnimMontage* HitReactMontage;
+
 	void HideCharacterIfCameraClose();
 	
 	UPROPERTY(EditAnywhere)

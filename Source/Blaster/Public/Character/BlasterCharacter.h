@@ -8,11 +8,12 @@
 #include "BlasterTypes/TurningInPlace.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/InteractWithCrosshairInterface.h"
 #include "Weapon/Weapon.h"
 #include "BlasterCharacter.generated.h"
 
 UCLASS()
-class BLASTER_API ABlasterCharacter : public ACharacter
+class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCrosshairInterface
 {
 	GENERATED_BODY()
 

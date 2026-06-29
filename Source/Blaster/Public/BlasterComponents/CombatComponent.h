@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "HUD/BlasterHUD.h"
 #include "CombatComponent.generated.h"
 
 #define TRACE_LENGTH 80000
@@ -81,12 +82,13 @@ private:
 	float CrosshairShootingFactor;
 	
 	FVector HitTarget;
+	FHUDPackage HUDPackage; 
 	
 	/*
 	 * Aiming and FOV
 	 */
 	
-	float DefaultFOV;										// field of view when not aiming
+	float DefaultFOV;	// field of view when not aiming
 	float CurrentFOV;
 	
 	void InterpFOV(float DeltaTime);

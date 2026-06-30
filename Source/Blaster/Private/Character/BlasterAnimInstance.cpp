@@ -48,7 +48,7 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	const float Interp = FMath::FInterpTo(Lean, Target, DeltaSeconds, 6.f);							// smoothly interpolate towards the target lean value
 	Lean = FMath::Clamp(Interp, -90.f, 90.f);																		// clamp lean between -90 and 90 degrees
 	
-	AO_Yaw = BlasterCharacter->GetAO_Yaw();
+	AO_Yaw = GetAOYaw(DeltaSeconds);
 	AO_Pitch = BlasterCharacter->GetAO_Pitch();
 	
 	if (bWeaponEquipped && EquippedWeapon && EquippedWeapon->GetWeaponMesh() && BlasterCharacter->GetMesh())
@@ -70,4 +70,44 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			RightHandRotation = FMath::RInterpTo(RightHandRotation, LookAtRotation, DeltaSeconds, 30.f);
 		}
 	}
+}
+
+float UBlasterAnimInstance::GetAOYaw(float DeltaTime)
+{
+	const FRotator CurrentRotation = TryGetPawnOwner()->GetActorRotation();
+	const float YawDelta = CurrentRotation.Yaw - PawnRotation.Yaw;
+	
+	float New_AOYaw = 0.f;
+	
+	if (Speed == 0.f && !bIsInAir)
+	{
+		New_AOYaw = FRotator::NormalizeAxis(AO_Yaw - YawDelta);
+		
+		if (New_AOYaw > 90.f)
+		{
+			TurningInPlace = ETurningInPlace::ETIP_Right;
+		}
+		else if (New_AOYaw < -90.f)
+		{
+			TurningInPlace = ETurningInPlace::ETIP_Left;
+		}
+		
+		const bool bTurning = TurningInPlace != ETurningInPlace::ETIP_NotTurning;
+		if (bTurning)
+		{
+			New_AOYaw = FMath::FInterpTo(New_AOYaw, 0.f, DeltaTime, 4.f);
+			if (FMath::Abs(New_AOYaw) < 15.f)
+			{
+				TurningInPlace = ETurningInPlace::ETIP_NotTurning;
+			}
+		}
+	}
+	else
+	{
+		New_AOYaw = FMath::FInterpTo(AO_Yaw, 0.f, DeltaTime, 4.f);
+		TurningInPlace = ETurningInPlace::ETIP_NotTurning;
+	}
+	
+	PawnRotation = CurrentRotation;
+	return New_AOYaw;
 }

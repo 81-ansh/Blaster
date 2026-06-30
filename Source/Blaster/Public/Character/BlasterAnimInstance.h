@@ -19,6 +19,7 @@ public:
 	
 	virtual void NativeInitializeAnimation() override;
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	float GetAOYaw(float DeltaTime);
 	
 private:
 	
@@ -53,6 +54,7 @@ private:
 	
 	FRotator CharacterRotationLastFrame;
 	FRotator CharacterRotation;
+	FRotator PawnRotation;
 	
 	UPROPERTY(BlueprintReadOnly, Category = "Movement", meta = (AllowPrivateAccess = true))
 	float AO_Yaw;

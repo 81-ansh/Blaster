@@ -12,6 +12,8 @@
 #include "Weapon/Weapon.h"
 #include "BlasterCharacter.generated.h"
 
+class ABlasterPlayerController;
+
 UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCrosshairInterface
 {
@@ -147,5 +149,7 @@ private:
 	
 	UFUNCTION()
 	void OnRep_Health();
+	
+	ABlasterPlayerController* BlasterPlayerController;
 	
 };

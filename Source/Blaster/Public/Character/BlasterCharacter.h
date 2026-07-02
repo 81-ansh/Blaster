@@ -29,9 +29,10 @@ public:
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);	
 	virtual void OnRep_ReplicatedMovement() override;
+	void Elim();
 	
 	UFUNCTION(NetMulticast, Reliable)
-	void Elim();
+	void MulticastElim();
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMapping;
@@ -162,5 +163,12 @@ private:
 	ABlasterPlayerController* BlasterPlayerController;
 	
 	bool bElimmed = false;
+	
+	FTimerHandle ElimTimer;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float ElimDelay = 3.f;
+	
+	void ElimTimerFinished();
 	
 };

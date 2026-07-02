@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "BlasterTypes/TurningInPlace.h"
 #include "Camera/CameraComponent.h"
+#include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/InteractWithCrosshairInterface.h"
 #include "Weapon/Weapon.h"
@@ -170,5 +171,30 @@ private:
 	float ElimDelay = 3.f;
 	
 	void ElimTimerFinished();
+	
+	/*
+	 * Dissolve Effect
+	 */
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UTimelineComponent> DissolveTimeline;
+	
+	FOnTimelineFloat DissolveTrack;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UCurveFloat> DissolveCurve;
+	
+	// Dynamic Instance that can be change at runtime
+	UPROPERTY(VisibleAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstanceDynamic> DynamicDissolveMaterialInstance;
+	
+	// Material Instance set on the Blueprint
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+	
+	UFUNCTION()
+	void UpdateDissolveMaterial(float DissolveValue);
+	
+	void StartDissolve();
 	
 };

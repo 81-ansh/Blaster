@@ -174,6 +174,12 @@ void UCombatComponent::OnRep_EquippedWeapon()
 {
 	if (EquippedWeapon && Character)
 	{
+		EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);													// Update weapon state to equipped
+		const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket"));	// Get the hand socket from the character mesh
+		if (HandSocket)
+		{
+			HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());									// Attach weapon to the hand socket
+		}
 		Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
 		Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
 	}

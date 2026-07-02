@@ -27,9 +27,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
-	void PlayFireMontage(bool bAiming);
-	
+	void PlayFireMontage(bool bAiming);	
 	virtual void OnRep_ReplicatedMovement() override;
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void Elim();
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMapping;
@@ -64,7 +66,8 @@ public:
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 	FORCEINLINE ETurningInPlace GetTurningInPlace() const { return TurningInPlace; }
-	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }	
+	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
+	FORCEINLINE bool IsElimmed() const { return bElimmed; }
 
 protected:
 	
@@ -83,6 +86,8 @@ protected:
 	void FireButtonPressed();
 	void FireButtonReleased();
 	void PlayHitReactMontage();
+	void PlayElimMontage();
+	
 	void UpdateHUDHealth();
 	
 	UFUNCTION()
@@ -124,6 +129,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	class UAnimMontage* HitReactMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* ElimMontage;
 
 	void HideCharacterIfCameraClose();
 	
@@ -152,5 +160,7 @@ private:
 	void OnRep_Health();
 	
 	ABlasterPlayerController* BlasterPlayerController;
+	
+	bool bElimmed = false;
 	
 };

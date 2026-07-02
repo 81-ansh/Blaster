@@ -3,8 +3,13 @@
 
 #include "Game/BlasterGameMode.h"
 
+#include "Character/BlasterCharacter.h"
+
 void ABlasterGameMode::PlayerEliminated(ABlasterCharacter* ElimmedCharacter, ABlasterPlayerController* VictimController,
-	ABlasterPlayerController* AttackerController)
+                                        ABlasterPlayerController* AttackerController)
 {
-	
+	if (ElimmedCharacter)
+	{
+		ElimmedCharacter->Elim();
+	}
 }

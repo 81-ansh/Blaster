@@ -71,11 +71,10 @@ void ABlasterCharacter::BeginPlay()
 			}
 		}
 	}
-	
-	BlasterPlayerController = Cast<ABlasterPlayerController>(Controller);
-	if (BlasterPlayerController)
+	UpdateHUDHealth();
+	if (HasAuthority())
 	{
-		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
+		OnTakeAnyDamage.AddDynamic(this, &ABlasterCharacter::ReceiveDamage);
 	}
 }
 
@@ -242,7 +241,8 @@ void ABlasterCharacter::OnRep_OverlappingWeapon(AWeapon* LastWeapon)
 
 void ABlasterCharacter::OnRep_Health()
 {
-	
+	UpdateHUDHealth();
+	PlayHitReactMontage();
 }
 
 void ABlasterCharacter::SetOverlappingWeapon(AWeapon* Weapon) // Only called on the Server
@@ -379,11 +379,6 @@ void ABlasterCharacter::TurnInPlace(float DeltaTime)
 	}
 }
 
-void ABlasterCharacter::MulticastHit_Implementation()
-{
-	PlayHitReactMontage();
-}
-
 void ABlasterCharacter::HideCharacterIfCameraClose()
 {
 	if (!IsLocallyControlled()) return;
@@ -444,5 +439,22 @@ void ABlasterCharacter::PlayHitReactMontage()
 		AnimInstance->Montage_Play(HitReactMontage);
 		FName SectionName("FromFront");
 		AnimInstance->Montage_JumpToSection(SectionName);
+	}
+}
+
+void ABlasterCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType,
+	AController* InstigatorController, AActor* DamageCauser)
+{
+	Health = FMath::Clamp(Health - Damage, 0.f, MaxHealth);
+	UpdateHUDHealth();
+	PlayHitReactMontage();
+}
+
+void ABlasterCharacter::UpdateHUDHealth()
+{
+	BlasterPlayerController = BlasterPlayerController == nullptr ? Cast<ABlasterPlayerController>(Controller) : BlasterPlayerController;
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->SetHUDHealth(Health, MaxHealth);
 	}
 }

@@ -7,10 +7,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "BlasterComponents/CombatComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Game/BlasterGameMode.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "PlayerController/BlasterPlayerController.h"
@@ -245,6 +247,16 @@ void ABlasterCharacter::Elim()
 	);
 }
 
+void ABlasterCharacter::Destroyed()
+{
+	Super::Destroyed();
+	
+	if (ElimBotComponent)
+	{
+		ElimBotComponent->DestroyComponent();
+	}
+}
+
 void ABlasterCharacter::MulticastElim_Implementation()
 {
 	bElimmed = true;
@@ -271,6 +283,26 @@ void ABlasterCharacter::MulticastElim_Implementation()
 	// Disable Collision
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	
+	// Spawn Elim Bot
+	if (ElimBotEffect)
+	{
+		FVector ElimBotSpawnPoint(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z + 200.f);
+		ElimBotComponent = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+			GetWorld(),
+			ElimBotEffect,
+			ElimBotSpawnPoint,
+			GetActorRotation()
+		);
+	}
+	if (ElimBotSound)
+	{
+		UGameplayStatics::SpawnSoundAtLocation(
+			this,
+			ElimBotSound,
+			GetActorLocation()
+		);
+	}
 	
 }
 

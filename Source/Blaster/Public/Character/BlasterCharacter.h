@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InputAction.h"
 #include "InputMappingContext.h"
+#include "NiagaraComponent.h"
 #include "BlasterTypes/TurningInPlace.h"
 #include "Camera/CameraComponent.h"
 #include "Components/TimelineComponent.h"
@@ -31,6 +32,7 @@ public:
 	void PlayFireMontage(bool bAiming);	
 	virtual void OnRep_ReplicatedMovement() override;
 	void Elim();
+	virtual void Destroyed() override;
 	
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
@@ -196,5 +198,18 @@ private:
 	void UpdateDissolveMaterial(float DissolveValue);
 	
 	void StartDissolve();
+	
+	/*
+	 * Elim Bot
+	 */
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> ElimBotEffect;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UNiagaraComponent> ElimBotComponent;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> ElimBotSound;
 	
 };

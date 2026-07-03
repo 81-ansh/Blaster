@@ -7,6 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
+class ABlasterCharacter;
+class ABlasterPlayerController;
 class UTexture2D;
 
 UENUM(BlueprintType)
@@ -69,6 +71,8 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void OnRep_Owner() override;
+	void SetHUDAmmo();
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
 	void Dropped();
@@ -91,6 +95,12 @@ protected:
 
 private:
 	
+	UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere, Category = "Weapon Properties")
+	EWeaponState WeaponState;
+	
+	UFUNCTION()
+	void OnRep_WeaponState();
+
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
 	USkeletalMeshComponent* WeaponMesh;
 	
@@ -106,10 +116,21 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class ACasing> CasingClass;
 	
-	UPROPERTY(ReplicatedUsing = OnRep_WeaponState, VisibleAnywhere, Category = "Weapon Properties")
-	EWeaponState WeaponState;
-
+	UPROPERTY(EditAnywhere, ReplicatedUsing = OnRep_Ammo)
+	int32 Ammo;
+	
 	UFUNCTION()
-	void OnRep_WeaponState();
+	void OnRep_Ammo();
+	
+	void SpendRound();
+	
+	UPROPERTY(EditAnywhere)
+	int32 MagCapacity;
+	
+	UPROPERTY()
+	ABlasterCharacter* BlasterOwnerCharacter;
+	
+	UPROPERTY()
+	ABlasterPlayerController* BlasterOwnerController;
 	
 };

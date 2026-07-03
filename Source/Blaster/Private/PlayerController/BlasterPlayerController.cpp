@@ -34,7 +34,7 @@ void ABlasterPlayerController::SetHUDHealth(float Health, float MaxHealth)
 	{
 		const float HealthPercent = Health / MaxHealth;
 		BlasterHUD->CharacterOverlay->HealthBar->SetPercent(HealthPercent);														// Setting ProgressBar
-		FString HealthText = FString::Printf(TEXT("%d / %d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));		// Getting the value in string
+		FString HealthText = FString::Printf(TEXT("%d / %d"), FMath::CeilToInt(Health), FMath::CeilToInt(MaxHealth));	// Getting the value in string
 		BlasterHUD->CharacterOverlay->HealthText->SetText(FText::FromString(HealthText));										// Converting the string to Text and setting HealthText
 	}
 }
@@ -56,5 +56,15 @@ void ABlasterPlayerController::SetHUDDeath(int32 Deaths)
 	{
 		FString DeathText = FString::Printf(TEXT("%d"), Deaths);
 		BlasterHUD->CharacterOverlay->DeathAmount->SetText(FText::FromString(DeathText));
+	}
+}
+
+void ABlasterPlayerController::SetHUDWeaponAmmo(int32 Ammo)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->WeaponAmmoAmount)
+	{
+		FString AmmoText = FString::Printf(TEXT("%d"), Ammo);
+		BlasterHUD->CharacterOverlay->WeaponAmmoAmount->SetText(FText::FromString(AmmoText));
 	}
 }

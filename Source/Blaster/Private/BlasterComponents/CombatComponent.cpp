@@ -279,7 +279,10 @@ void UCombatComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
 	if (Character == nullptr || WeaponToEquip == nullptr) return;												// Check if the Character and the Weapon is Valid
-	
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->Dropped();
+	}
 	EquippedWeapon = WeaponToEquip;
 	EquippedWeapon->SetWeaponState(EWeaponState::EWS_Equipped);													// Update weapon state to equipped
 	const USkeletalMeshSocket* HandSocket = Character->GetMesh()->GetSocketByName(FName("RightHandSocket"));	// Get the hand socket from the character mesh
@@ -288,6 +291,7 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 		HandSocket->AttachActor(EquippedWeapon, Character->GetMesh());									// Attach weapon to the hand socket
 	}
 	EquippedWeapon->SetOwner(Character);																		// Set the character as the owner of the weapon
+	EquippedWeapon->SetHUDAmmo();
 	Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
 	Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
 }

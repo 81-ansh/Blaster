@@ -11,9 +11,9 @@
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/InteractWithCrosshairInterface.h"
-#include "Weapon/Weapon.h"
 #include "BlasterCharacter.generated.h"
 
+class AWeapon;
 class ABlasterPlayerState;
 class ABlasterPlayerController;
 

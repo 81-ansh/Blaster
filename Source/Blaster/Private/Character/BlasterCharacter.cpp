@@ -2,6 +2,7 @@
 
 #include "Character/BlasterCharacter.h"
 #include "Blaster/Blaster.h"
+#include "Blaster/Public/Weapon/Weapon.h"
 #include "Camera/CameraComponent.h"
 #include "Components/WidgetComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -261,6 +262,10 @@ void ABlasterCharacter::Destroyed()
 
 void ABlasterCharacter::MulticastElim_Implementation()
 {
+	if (BlasterPlayerController)
+	{
+		BlasterPlayerController->SetHUDWeaponAmmo(0);
+	}
 	bElimmed = true;
 	PlayElimMontage();
 	

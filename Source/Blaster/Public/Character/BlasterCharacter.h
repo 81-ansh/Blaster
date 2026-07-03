@@ -62,6 +62,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* FireAction;
 	
+	UPROPERTY()
 	ABlasterPlayerState* BlasterPlayerState;
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
@@ -170,6 +171,7 @@ private:
 	UFUNCTION()
 	void OnRep_Health();
 	
+	UPROPERTY()
 	ABlasterPlayerController* BlasterPlayerController;
 	
 	bool bElimmed = false;

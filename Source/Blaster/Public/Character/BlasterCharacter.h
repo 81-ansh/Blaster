@@ -14,6 +14,7 @@
 #include "Weapon/Weapon.h"
 #include "BlasterCharacter.generated.h"
 
+class ABlasterPlayerState;
 class ABlasterPlayerController;
 
 UCLASS()
@@ -61,6 +62,8 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* FireAction;
 	
+	ABlasterPlayerState* BlasterPlayerState;
+	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
 	bool IsAiming();
@@ -93,8 +96,10 @@ protected:
 	void FireButtonReleased();
 	void PlayHitReactMontage();
 	void PlayElimMontage();
-	
 	void UpdateHUDHealth();
+	
+	// Poll for any relevant class and initialize HUD
+	void PollInit();
 	
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser);

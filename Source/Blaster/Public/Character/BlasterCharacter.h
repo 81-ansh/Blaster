@@ -14,6 +14,7 @@
 #include "BlasterCharacter.generated.h"
 
 class AWeapon;
+class UAnimMontage;
 class ABlasterPlayerState;
 class ABlasterPlayerController;
 
@@ -30,7 +31,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
-	void PlayFireMontage(bool bAiming);	
+	void PlayFireMontage(bool bAiming);
+	void PlayReloadMontage();
 	virtual void OnRep_ReplicatedMovement() override;
 	void Elim();
 	virtual void Destroyed() override;
@@ -55,6 +57,9 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* CrouchAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* ReloadAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputAction* AimAction;
@@ -87,6 +92,7 @@ protected:
 	void Look(const FInputActionInstance& Instance);
 	void EquipButtonPressed();
 	void CrouchButtonPressed();
+	void ReloadButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
 	void CalculateAO_Pitch();
@@ -136,11 +142,18 @@ private:
 	ETurningInPlace TurningInPlace;
 	void TurnInPlace(float DeltaTime);
 	
-	UPROPERTY(EditAnywhere, Category = "Combat")
-	class UAnimMontage* FireWeaponMontage;
+	/*
+	 * Animation Montage
+	 */
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	class UAnimMontage* HitReactMontage;
+	 UAnimMontage* FireWeaponMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* ReloadMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	UAnimMontage* HitReactMontage;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	UAnimMontage* ElimMontage;

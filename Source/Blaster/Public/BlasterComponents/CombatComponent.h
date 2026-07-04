@@ -118,4 +118,11 @@ private:
 	UFUNCTION()
 	void OnRep_CarriedAmmo();
 	
+	TMap<EWeaponType, int32> CarriedAmmoMap;
+	
+	UPROPERTY(EditAnywhere)
+	int32 StartingARAmmo = 30;
+	
+	void InitializeCarriedAmmo();
+	
 };

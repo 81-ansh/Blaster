@@ -167,11 +167,8 @@ void UCombatComponent::FireTimerFinished()
 
 bool UCombatComponent::CanFire()
 {
-	if (!EquippedWeapon) return false;
-	if (EquippedWeapon->IsEmpty()) return false;
-	if (!bCanFire) return false;
- 
-	return true;
+	if (EquippedWeapon == nullptr) return false;
+	return !EquippedWeapon->IsEmpty() && bCanFire && CombatState == ECombatState::ECS_Unoccupied;
 }
 
 void UCombatComponent::OnRep_CarriedAmmo()
@@ -293,7 +290,7 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 void UCombatComponent::MulticastFire_Implementation(const FVector_NetQuantize& TraceHitTarget)
 {
 	if (EquippedWeapon == nullptr) return;
-	if (Character)
+	if (Character && CombatState == ECombatState::ECS_Unoccupied)
 	{
 		Character->PlayFireMontage(bAiming);
 		EquippedWeapon->Fire(TraceHitTarget);
@@ -358,6 +355,10 @@ void UCombatComponent::FinishReloading()
 	{
 		CombatState = ECombatState::ECS_Unoccupied;
 	}
+	if (bFireButtonPressed)
+	{
+		Fire();
+	}
 }
 
 void UCombatComponent::OnRep_CombatState()
@@ -366,6 +367,12 @@ void UCombatComponent::OnRep_CombatState()
 	{
 	case ECombatState::ECS_Reloading:
 		HandleReload();
+		break;
+	case ECombatState::ECS_Unoccupied:
+		if (bFireButtonPressed)
+		{
+			Fire();
+		}
 		break;
 	}
 }

@@ -62,6 +62,7 @@ protected:
 	void ServerReload();
 	
 	void HandleReload();
+	int32 AmountToReload();
 	
 private:
 	
@@ -139,5 +140,7 @@ private:
 	
 	UFUNCTION()
 	void OnRep_CombatState();
+	
+	void UpdateAmmoValues();
 	
 };

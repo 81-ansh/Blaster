@@ -77,6 +77,7 @@ public:
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
 	void Dropped();
+	void AddAmmo(int32 AmmoToAdd);
 	
 	void SetWeaponState(EWeaponState State);
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }
@@ -84,6 +85,8 @@ public:
 	FORCEINLINE	float GetZoomedFOV() const { return ZoomedFOV; }
 	FORCEINLINE	float GetZoomInterpSpeed() const { return ZoomInterpSpeed; }
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
+	FORCEINLINE int32 GetAmmo() const { return Ammo; }
+	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity; }
 	bool IsEmpty();
 	
 protected:

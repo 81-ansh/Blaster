@@ -216,6 +216,15 @@ void UCombatComponent::OnRep_EquippedWeapon()
 		}
 		Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
 		Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
+		
+		if (EquippedWeapon->EquipSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(
+				this,
+				EquippedWeapon->EquipSound,
+				Character->GetActorLocation()
+			);
+		}
 	}
 }
 
@@ -328,7 +337,14 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 	{
 		Controller->SetHUDCarriedAmmo(CarriedAmmo);
 	}
-	
+	if (EquippedWeapon->EquipSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			EquippedWeapon->EquipSound,
+			Character->GetActorLocation()
+		);
+	}
 	Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
 	Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking
 }

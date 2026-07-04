@@ -70,6 +70,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	bool bAutomatic = true;
 	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> EquipSound;
+	
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void OnRep_Owner() override;

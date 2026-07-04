@@ -163,6 +163,10 @@ void UCombatComponent::FireTimerFinished()
 	{
 		Fire();
 	}
+	if (EquippedWeapon->IsEmpty())
+	{
+		Reload();
+	}
 }
 
 bool UCombatComponent::CanFire()
@@ -344,6 +348,10 @@ void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 			EquippedWeapon->EquipSound,
 			Character->GetActorLocation()
 		);
+	}	
+	if (EquippedWeapon->IsEmpty())
+	{
+		Reload();
 	}
 	Character->GetCharacterMovement()->bOrientRotationToMovement = false;										// stop character from rotating towards movement direction
 	Character->bUseControllerRotationYaw = true;																// character now rotates to match where the camera is looking

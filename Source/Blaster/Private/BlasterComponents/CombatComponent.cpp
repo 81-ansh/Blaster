@@ -151,6 +151,15 @@ void UCombatComponent::FireTimerFinished()
 	}
 }
 
+bool UCombatComponent::CanFire()
+{
+	if (!EquippedWeapon) return false;
+	if (EquippedWeapon->IsEmpty()) return false;
+	if (!bCanFire) return false;
+ 
+	return true;
+}
+
 void UCombatComponent::SetAiming(bool bIsAiming)
 {
 	bAiming = bIsAiming;
@@ -187,7 +196,7 @@ void UCombatComponent::OnRep_EquippedWeapon()
 
 void UCombatComponent::Fire()
 {
-	if (bCanFire && EquippedWeapon)
+	if (CanFire() && EquippedWeapon)
 	{
 		ServerFire(HitTarget);
 		CrosshairShootingFactor = 0.75f;

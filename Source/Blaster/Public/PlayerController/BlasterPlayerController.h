@@ -23,15 +23,21 @@ public:
 	void SetHUDDeath(int32 Deaths);
 	void SetHUDWeaponAmmo(int32 Ammo);
 	void SetHUDCarriedAmmo(int32 Ammo);
-	void OnPossess(APawn* InPawn) override;
+	void SetHUDMatchCountdown(float CountdownTime);
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void Tick(float DeltaSeconds) override;
 	
 protected:
 	
 	virtual void BeginPlay() override;
+	void SetHUDTime();
 	
 private:
 	
 	UPROPERTY()
 	ABlasterHUD* BlasterHUD;
+	
+	float MatchTime = 120.f;
+	uint32 CountdownInt;
 	
 };

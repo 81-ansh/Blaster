@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "PlayerController/BlasterPlayerController.h"
-
 #include "Character/BlasterCharacter.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
@@ -16,12 +14,30 @@ void ABlasterPlayerController::BeginPlay()
 	BlasterHUD = Cast<ABlasterHUD>(GetHUD());
 }
 
+void ABlasterPlayerController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	SetHUDTime();
+	CheckTimeSync(DeltaSeconds);
+}
+
+void ABlasterPlayerController::CheckTimeSync(float DeltaTime)
+{
+	TimeSyncRunningTime += DeltaTime;
+	if (IsLocalController() && TimeSyncRunningTime > TimeSyncFrequency)
+	{
+		ServerRequestServerTime(GetWorld()->GetTimeSeconds());
+		TimeSyncRunningTime = 0.f;
+	}
+}
+
 void ABlasterPlayerController::SetHUDTime()
 {
-	uint32 SecondsLeft = FMath::CeilToInt(MatchTime - GetWorld()->GetTimeSeconds());		// Seconds remaining, rounded up
+	uint32 SecondsLeft = FMath::CeilToInt(MatchTime - GetServerTime());					// Seconds remaining, rounded up
 	if (CountdownInt != SecondsLeft)														// Only update HUD if the whole second changed
 	{
-		SetHUDMatchCountdown(MatchTime - GetWorld()->GetTimeSeconds());
+		SetHUDMatchCountdown(MatchTime - GetServerTime());
 	}
 	CountdownInt = SecondsLeft;			// Store last displayed second
 }
@@ -35,13 +51,6 @@ void ABlasterPlayerController::OnPossess(APawn* InPawn)
 	{
 		SetHUDHealth(BlasterCharacter->GetHealth(), BlasterCharacter->GetMaxHealth());
 	}
-}
-
-void ABlasterPlayerController::Tick(float DeltaSeconds)
-{
-	Super::Tick(DeltaSeconds);
-	
-	SetHUDTime();
 }
 
 void ABlasterPlayerController::SetHUDHealth(float Health, float MaxHealth)
@@ -106,5 +115,43 @@ void ABlasterPlayerController::SetHUDMatchCountdown(float CountdownTime)
 		
 		FString CountdownText = FString::Printf(TEXT("%02d : %02d"), Minutes, Seconds);			// Format as MM : SS
 		BlasterHUD->CharacterOverlay->MatchCountdownText->SetText(FText::FromString(CountdownText));	// Update the text widget
+	}
+}
+
+void ABlasterPlayerController::ServerRequestServerTime_Implementation(float TimeOfClientRequest)
+{
+	// Time on server
+	float ServerTimeOfReceipt = GetWorld()->GetTimeSeconds();
+	
+	// Sending back current server time and the time on which client made request
+	ClientReportServerTime(TimeOfClientRequest, ServerTimeOfReceipt);
+}
+
+void ABlasterPlayerController::ClientReportServerTime_Implementation(float TimeOfClientRequest, float TimeServerReceivedClientRequest)
+{
+	// Round Trip Time (RTT) is the total time it takes for a request to travel from the client to the server and for the server's response to travel back to the client.
+	// RoundTripTime is found by difference of Client's current time and the time it send request
+	float RoundTripTime = GetWorld()->GetTimeSeconds() - TimeOfClientRequest;
+	
+	// CurrentServerTime is calculated by taking the time when the server received the client's request and adding half of the Round Trip Time
+	float CurrentServerTime = TimeServerReceivedClientRequest + (0.5f * RoundTripTime);
+	
+	// Difference in Server and Client time
+	ClientServerDelta = CurrentServerTime - GetWorld()->GetTimeSeconds();
+}
+
+float ABlasterPlayerController::GetServerTime()
+{
+	if (HasAuthority()) return GetWorld()->GetTimeSeconds();
+	else return GetWorld()->GetTimeSeconds() + ClientServerDelta;
+}
+
+void ABlasterPlayerController::ReceivedPlayer()
+{
+	Super::ReceivedPlayer();
+	
+	if (IsLocalController())
+	{
+		ServerRequestServerTime(GetWorld()->GetTimeSeconds());
 	}
 }

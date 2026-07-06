@@ -4,10 +4,12 @@
 #include "Character/BlasterCharacter.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
+#include "Game/BlasterGameMode.h"
 #include "GameFramework/GameMode.h"
 #include "HUD/Announcement.h"
 #include "HUD/BlasterHUD.h"
 #include "HUD/CharacterOverlay.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
 void ABlasterPlayerController::BeginPlay()
@@ -15,12 +17,7 @@ void ABlasterPlayerController::BeginPlay()
 	Super::BeginPlay();
 	
 	BlasterHUD = Cast<ABlasterHUD>(GetHUD());
-	
-	// Creating the Announcement Widget
-	if (BlasterHUD)
-	{
-		BlasterHUD->AddAnnouncement();
-	}
+	ServerCheckMatchState();			// Ask server for current match state/timing
 }
 
 void ABlasterPlayerController::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -48,12 +45,69 @@ void ABlasterPlayerController::CheckTimeSync(float DeltaTime)
 	}
 }
 
+void ABlasterPlayerController::ServerCheckMatchState_Implementation()
+{
+	ABlasterGameMode* GameMode = Cast<ABlasterGameMode>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		// Copy real values from GameMode
+		WarmupTime = GameMode->WarmupTime;
+		MatchTime = GameMode->MatchTime;
+		LevelStartingTime = GameMode->LevelStartingTime;
+		MatchState = GameMode->GetMatchState();
+		
+		// Send these values back down to the requesting client
+		ClientJoinMidgame(MatchState, WarmupTime, MatchTime, LevelStartingTime);
+	}
+}
+
+void ABlasterPlayerController::ClientJoinMidgame_Implementation(FName InMatchState, float InWarmupTime, float InMatchTime, float InLevelStartingTime)
+{
+	// Store the authoritative values sent from server
+	WarmupTime = InWarmupTime;
+	MatchTime = InMatchTime;
+	LevelStartingTime = InLevelStartingTime;
+	MatchState = InMatchState;
+	OnMatchStateSet(MatchState);
+	
+	// If still in warmup, create the countdown announcement widget
+	if (BlasterHUD && MatchState == MatchState::WaitingToStart)
+	{
+		BlasterHUD->AddAnnouncement();
+	}
+}
+
 void ABlasterPlayerController::SetHUDTime()
 {
-	uint32 SecondsLeft = FMath::CeilToInt(MatchTime - GetServerTime());					// Seconds remaining, rounded up
-	if (CountdownInt != SecondsLeft)														// Only update HUD if the whole second changed
+	if (HasAuthority())
 	{
-		SetHUDMatchCountdown(MatchTime - GetServerTime());
+		ABlasterGameMode* BlasterGameMode = Cast<ABlasterGameMode>(UGameplayStatics::GetGameMode(this));
+		if (BlasterGameMode)
+		{
+			LevelStartingTime = BlasterGameMode->LevelStartingTime;
+		}
+	}
+	
+	float TimeLeft = 0.f;
+	
+	// Different countdown formula depending on match phase
+	// Still in warmup: count down from WarmupTime, offset by when the level actually started
+	if (MatchState == MatchState::WaitingToStart) TimeLeft = WarmupTime - GetServerTime() + LevelStartingTime;
+	
+	// Match started: count down from (warmup + match duration) combined, same time reference point
+	else if (MatchState == MatchState::InProgress) TimeLeft = WarmupTime + MatchTime - GetServerTime() + LevelStartingTime;
+	
+	uint32 SecondsLeft = FMath::CeilToInt(TimeLeft);					// Seconds remaining, rounded up
+	if (CountdownInt != SecondsLeft)									// Only update HUD if the whole second changed
+	{
+		if (MatchState == MatchState::WaitingToStart)
+		{
+			SetHUDAnnouncementCountdown(TimeLeft);
+		}
+		if (MatchState == MatchState::InProgress)
+		{
+			SetHUDMatchCountdown(TimeLeft);
+		}
 	}
 	CountdownInt = SecondsLeft;			// Store last displayed second
 }
@@ -131,6 +185,19 @@ void ABlasterPlayerController::SetHUDMatchCountdown(float CountdownTime)
 		
 		FString CountdownText = FString::Printf(TEXT("%02d : %02d"), Minutes, Seconds);			// Format as MM : SS
 		BlasterHUD->CharacterOverlay->MatchCountdownText->SetText(FText::FromString(CountdownText));	// Update the text widget
+	}
+}
+
+void ABlasterPlayerController::SetHUDAnnouncementCountdown(float CountdownTime)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if (BlasterHUD && BlasterHUD->Announcement && BlasterHUD->Announcement->WarmupTime)
+	{
+		int32 Minutes = FMath::FloorToInt(CountdownTime / 60.f);										// Get whole minutes
+		int32 Seconds = CountdownTime - (Minutes * 60.f);												// Get remaining seconds
+		
+		FString CountdownText = FString::Printf(TEXT("%02d : %02d"), Minutes, Seconds);			// Format as MM : SS
+		BlasterHUD->Announcement->WarmupTime->SetText(FText::FromString(CountdownText));				// Update the text widget
 	}
 }
 

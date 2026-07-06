@@ -28,6 +28,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float WarmupTime = 10.f;			// Time before character spawn
 	
+	UPROPERTY(EditDefaultsOnly)
+	float MatchTime = 120.f;
+	
 	float LevelStartingTime = 0.f;
 	
 protected:

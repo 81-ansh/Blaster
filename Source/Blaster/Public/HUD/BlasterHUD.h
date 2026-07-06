@@ -38,16 +38,16 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Player Stats")
 	TSubclassOf<UUserWidget> CharacterOverlayClass;
 	
+	UPROPERTY()
 	TObjectPtr<UCharacterOverlay> CharacterOverlay;
 	
 	virtual void DrawHUD() override;
-	
+	void AddCharacterOverlay();
 	FORCEINLINE void SetHUDPackage(const FHUDPackage& Package) { HUDPackage = Package; }
 	
 protected:
 	
 	virtual void BeginPlay() override;
-	void AddCharacterOverlay();
 	
 private:
 	

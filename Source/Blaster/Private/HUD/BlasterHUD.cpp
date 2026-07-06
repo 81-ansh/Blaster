@@ -3,6 +3,8 @@
 
 #include "HUD/BlasterHUD.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
+#include "HUD/Announcement.h"
 #include "HUD/CharacterOverlay.h"
 
 
@@ -22,6 +24,17 @@ void ABlasterHUD::AddCharacterOverlay()
 	if(CharacterOverlay)
 	{
 		CharacterOverlay->AddToViewport();
+	}
+}
+
+void ABlasterHUD::AddAnnouncement()
+{
+	APlayerController* PlayerController = GetOwningPlayerController();
+	if (PlayerController && AnnouncementClass)
+	{
+		Announcement = CreateWidget<UAnnouncement>(PlayerController, AnnouncementClass);
+		Announcement->InfoText->SetVisibility(ESlateVisibility::Hidden);					// If want to add info in the Warmup, remove this line
+		Announcement->AddToViewport();
 	}
 }
 

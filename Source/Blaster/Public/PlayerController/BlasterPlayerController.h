@@ -33,6 +33,7 @@ public:
 	virtual void ReceivedPlayer() override;		// Sync with server as soon as possible
 	void OnMatchStateSet(FName State);
 	void HandleMatchStart();
+	void HandleCooldown();
 	
 protected:
 	

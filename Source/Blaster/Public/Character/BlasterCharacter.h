@@ -6,6 +6,7 @@
 #include "InputAction.h"
 #include "InputMappingContext.h"
 #include "NiagaraComponent.h"
+#include "BlasterComponents/CombatComponent.h"
 #include "BlasterTypes/CombatState.h"
 #include "BlasterTypes/TurningInPlace.h"
 #include "Camera/CameraComponent.h"
@@ -40,6 +41,9 @@ public:
 	
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastElim();
+	
+	UPROPERTY(Replicated)
+	bool bDisableGameplay = false;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMapping;
@@ -76,6 +80,7 @@ public:
 	bool IsAiming();
 	AWeapon* GetEquippedWeapon();
 	FVector GetHitTarget() const;
+	ECombatState GetCombatState() const;
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
 	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
@@ -84,7 +89,8 @@ public:
 	FORCEINLINE bool IsElimmed() const { return bElimmed; }
 	FORCEINLINE float GetHealth() const { return Health; }
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
-	ECombatState GetCombatState() const;
+	FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
+	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
 
 protected:
 	
@@ -109,6 +115,7 @@ protected:
 	
 	// Poll for any relevant class and initialize HUD
 	void PollInit();
+	void RotateInPlace(float DeltaTime);
 	
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser);

@@ -315,4 +315,10 @@ void ABlasterPlayerController::HandleCooldown()
 			BlasterHUD->Announcement->InfoText->SetText(FText());
 		}
 	}
+	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(GetPawn());
+	if (BlasterCharacter && BlasterCharacter->GetCombat())
+	{
+		BlasterCharacter->bDisableGameplay = true;		// Disabling the controls in cooldown state
+		BlasterCharacter->GetCombat()->FireButtonPressed(false);
+	}
 }

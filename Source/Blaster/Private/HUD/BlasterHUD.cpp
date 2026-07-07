@@ -33,7 +33,7 @@ void ABlasterHUD::AddAnnouncement()
 	if (PlayerController && AnnouncementClass)
 	{
 		Announcement = CreateWidget<UAnnouncement>(PlayerController, AnnouncementClass);
-		Announcement->InfoText->SetVisibility(ESlateVisibility::Hidden);					// If want to add info in the Warmup, remove this line
+		Announcement->InfoText->SetText(FText());
 		Announcement->AddToViewport();
 	}
 }

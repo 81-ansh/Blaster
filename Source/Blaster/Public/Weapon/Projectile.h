@@ -29,10 +29,16 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;
 	
-private:
-	
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* CollisionBox;
+	
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* ImpactParticles;
+	
+	UPROPERTY(EditAnywhere)
+	class USoundBase* ImpactSound;
+	
+private:
 	
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
@@ -40,12 +46,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UNiagaraSystem* Tracer;
 	
+	UPROPERTY()
 	class UNiagaraComponent* TracerComponent;
-
-	UPROPERTY(EditAnywhere)
-	class UNiagaraSystem* ImpactParticles;
-	
-	UPROPERTY(EditAnywhere)
-	class USoundBase* ImpactSound;
 	
 };

@@ -31,5 +31,13 @@ private:
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* BeamParticles;
 	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> MuzzleFlash;
 	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> FireSound;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<USoundBase> HitSound;
+
 };

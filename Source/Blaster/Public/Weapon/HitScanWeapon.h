@@ -28,4 +28,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UNiagaraSystem> ImpactParticles;
 	
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* BeamParticles;
+	
+	
 };

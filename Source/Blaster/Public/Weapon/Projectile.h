@@ -38,10 +38,10 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class USoundBase* ImpactSound;
 	
-private:
-	
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMovementComponent;
+	
+private:
 	
 	UPROPERTY(EditAnywhere)
 	class UNiagaraSystem* Tracer;

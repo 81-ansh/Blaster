@@ -6,6 +6,8 @@
 #include "Weapon/Projectile.h"
 #include "ProjectileRocket.generated.h"
 
+class URocketMovementComponent;
+
 /**
  * 
  */
@@ -40,6 +42,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundAttenuation> LoopingSoundAttenuation;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<URocketMovementComponent> RocketMovementComponent;
 	
 private:
 	

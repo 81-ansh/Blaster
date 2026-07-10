@@ -320,7 +320,10 @@ void ABlasterCharacter::MulticastElim_Implementation()
 			GetActorLocation()
 		);
 	}
-	
+	if (IsLocallyControlled() && Combat && Combat->bAiming && Combat->EquippedWeapon && Combat->EquippedWeapon->GetWeaponType() == EWeaponType::EWT_SniperRifle)
+	{
+		ShowSniperScopeWidget(false);
+	}
 }
 
 void ABlasterCharacter::ElimTimerFinished()

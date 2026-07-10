@@ -45,6 +45,9 @@ public:
 	UPROPERTY(Replicated)
 	bool bDisableGameplay = false;
 	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowSniperScopeWidget(bool bShowScope);
+	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	UInputMappingContext* InputMapping;
 	

@@ -35,6 +35,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
 	void PlayReloadMontage();
+	void PlayThrowGrenadeMontage();
 	virtual void OnRep_ReplicatedMovement() override;
 	void Elim();
 	virtual void Destroyed() override;
@@ -49,31 +50,34 @@ public:
 	void ShowSniperScopeWidget(bool bShowScope);
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputMappingContext* InputMapping;
+	TObjectPtr<UInputMappingContext> InputMapping;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* MoveAction;
+	TObjectPtr<UInputAction> MoveAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* LookAction;
+	TObjectPtr<UInputAction> LookAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* JumpAction;
+	TObjectPtr<UInputAction> JumpAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* EquipAction;
+	TObjectPtr<UInputAction> EquipAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* CrouchAction;
+	TObjectPtr<UInputAction> CrouchAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* ReloadAction;
+	TObjectPtr<UInputAction> ReloadAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* AimAction;
+	TObjectPtr<UInputAction> AimAction;
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
-	UInputAction* FireAction;
+	TObjectPtr<UInputAction> FireAction;
+	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	TObjectPtr<UInputAction> GrenadeThrowAction;
 	
 	UPROPERTY()
 	ABlasterPlayerState* BlasterPlayerState;
@@ -107,12 +111,13 @@ protected:
 	void ReloadButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
+	void FireButtonPressed();
+	void FireButtonReleased();
+	void GrenadeButtonPressed();
 	void CalculateAO_Pitch();
 	void AimOffset(float DeltaTime);
 	void SimProxiesTurn();
 	virtual void Jump() override;
-	void FireButtonPressed();
-	void FireButtonReleased();
 	void PlayHitReactMontage();
 	void PlayElimMontage();
 	void UpdateHUDHealth();
@@ -160,16 +165,19 @@ private:
 	 */
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	 UAnimMontage* FireWeaponMontage;
+	TObjectPtr<UAnimMontage> FireWeaponMontage;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UAnimMontage* ReloadMontage;
+	TObjectPtr<UAnimMontage> ReloadMontage;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UAnimMontage* HitReactMontage;
+	TObjectPtr<UAnimMontage> HitReactMontage;
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
-	UAnimMontage* ElimMontage;
+	TObjectPtr<UAnimMontage> ElimMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> ThrowGrenadeMontage;
 
 	void HideCharacterIfCameraClose();
 	

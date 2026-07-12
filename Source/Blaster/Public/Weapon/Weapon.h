@@ -73,6 +73,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> EquipSound;
 	
+	/*
+	 * Enable and disable custom depth
+	 */
+	
+	void EnableCustomDepth(bool bEnable);
+	
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void OnRep_Owner() override;

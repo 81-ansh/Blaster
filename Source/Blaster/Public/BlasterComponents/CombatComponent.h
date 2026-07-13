@@ -9,6 +9,7 @@
 #include "Weapon/WeaponTypes.h"
 #include "CombatComponent.generated.h"
 
+class AProjectile;
 class ABlasterPlayerController;
 class ABlasterHUD;
 class AWeapon;
@@ -77,6 +78,9 @@ protected:
 	
 	UFUNCTION(Server, Reliable)
 	void ServerThrowGrenade();
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AProjectile> GrenadeClass;
 	
 	void DropEquippedWeapon();
 	void AttachActorToRightHand(AActor* ActorToAttach);

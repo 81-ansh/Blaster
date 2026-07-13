@@ -255,4 +255,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> ElimBotSound;
 	
+	/*
+	 * Grenade
+	 */
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UStaticMeshComponent> AttachedGrenade;
+	
 };

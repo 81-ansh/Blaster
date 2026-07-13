@@ -224,6 +224,16 @@ void ABlasterPlayerController::SetHUDAnnouncementCountdown(float CountdownTime)
 	}
 }
 
+void ABlasterPlayerController::SetHUDGrenade(int32 Grenade)
+{
+	BlasterHUD = BlasterHUD == nullptr ? Cast<ABlasterHUD>(GetHUD()) : BlasterHUD;
+	if (BlasterHUD && BlasterHUD->CharacterOverlay && BlasterHUD->CharacterOverlay->GrenadeText)
+	{
+		FString GrenadeText = FString::Printf(TEXT("%d"), Grenade);
+		BlasterHUD->CharacterOverlay->GrenadeText->SetText(FText::FromString(GrenadeText));
+	}
+}
+
 void ABlasterPlayerController::ServerRequestServerTime_Implementation(float TimeOfClientRequest)
 {
 	// Time on server

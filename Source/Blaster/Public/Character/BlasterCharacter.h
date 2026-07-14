@@ -19,6 +19,9 @@ class AWeapon;
 class UAnimMontage;
 class ABlasterPlayerState;
 class ABlasterPlayerController;
+class USpringArmComponent;
+class UWidgetComponent;
+class UBuffComponent;
 
 UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCrosshairInterface
@@ -30,8 +33,8 @@ public:
 	ABlasterCharacter();
 	
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void PostInitializeComponents() override;
 	void PlayFireMontage(bool bAiming);
 	void PlayReloadMontage();
@@ -133,22 +136,25 @@ protected:
 private:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	class USpringArmComponent* CameraBoom;
+	USpringArmComponent* CameraBoom;
 	
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	class UCameraComponent* FollowCamera;
+	UCameraComponent* FollowCamera;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UWidgetComponent* OverheadWidget;
+	UWidgetComponent* OverheadWidget;
 	
 	UPROPERTY(ReplicatedUsing = OnRep_OverlappingWeapon)
-	class AWeapon* OverlappingWeapon;
+	AWeapon* OverlappingWeapon;
 	
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UCombatComponent* Combat;
+	UCombatComponent* Combat;
+	
+	UPROPERTY(VisibleAnywhere)
+	UBuffComponent* Buff;
 	
 	UFUNCTION(Server, Reliable)
 	void ServerEquipButtonPressed();
@@ -230,7 +236,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UCurveFloat> DissolveCurve;
 	
-	// Dynamic Instance that can be change at runtime
+	// Dynamic Instance that can be changed at runtime
 	UPROPERTY(VisibleAnywhere, Category = "Elim")
 	TObjectPtr<UMaterialInstanceDynamic> DynamicDissolveMaterialInstance;
 	

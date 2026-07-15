@@ -2,6 +2,7 @@
 
 #include "Pickups/HealthPickup.h"
 #include "NiagaraFunctionLibrary.h"
+#include "BlasterComponents/BuffComponent.h"
 #include "Character/BlasterCharacter.h"
 
 AHealthPickup::AHealthPickup()
@@ -19,7 +20,11 @@ void AHealthPickup::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	ABlasterCharacter* BlasterCharacter = Cast<ABlasterCharacter>(OtherActor);
 	if (BlasterCharacter)
 	{
-		
+		UBuffComponent* Buff = BlasterCharacter->GetBuff();
+		if (Buff)
+		{
+			Buff->Heal(HealAmount, HealingTime);
+		}
 	}
 	Destroy();
 }

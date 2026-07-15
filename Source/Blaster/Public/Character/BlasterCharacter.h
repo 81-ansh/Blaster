@@ -52,6 +52,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void ShowSniperScopeWidget(bool bShowScope);
 	
+	void UpdateHUDHealth();
+	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> InputMapping;
 	
@@ -98,8 +100,10 @@ public:
 	FORCEINLINE bool ShouldRotateRootBone() const { return bRotateRootBone; }
 	FORCEINLINE bool IsElimmed() const { return bElimmed; }
 	FORCEINLINE float GetHealth() const { return Health; }
+	FORCEINLINE void SetHealth(float Amount) { Health = Amount; }
 	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 	FORCEINLINE UCombatComponent* GetCombat() const { return Combat; }
+	FORCEINLINE UBuffComponent* GetBuff() const { return Buff; }
 	FORCEINLINE bool GetDisableGameplay() const { return bDisableGameplay; }
 	FORCEINLINE UAnimMontage* GetReloadMontage() const { return ReloadMontage; }
 	FORCEINLINE UStaticMeshComponent* GetAttachedGrenade() const { return AttachedGrenade; }
@@ -124,7 +128,6 @@ protected:
 	virtual void Jump() override;
 	void PlayHitReactMontage();
 	void PlayElimMontage();
-	void UpdateHUDHealth();
 	
 	// Poll for any relevant class and initialize HUD
 	void PollInit();
@@ -210,7 +213,7 @@ private:
 	float Health = 100.f;
 	
 	UFUNCTION()
-	void OnRep_Health();
+	void OnRep_Health(float LastHealth);
 	
 	UPROPERTY()
 	ABlasterPlayerController* BlasterPlayerController;

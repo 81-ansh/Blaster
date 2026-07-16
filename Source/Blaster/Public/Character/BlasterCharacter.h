@@ -53,6 +53,7 @@ public:
 	void ShowSniperScopeWidget(bool bShowScope);
 	
 	void UpdateHUDHealth();
+	void UpdateHUDShield();
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> InputMapping;
@@ -214,6 +215,19 @@ private:
 	
 	UFUNCTION()
 	void OnRep_Health(float LastHealth);
+	
+	/*
+	 * Player Shield
+	 */
+	
+	UPROPERTY(EditAnywhere, Category = "Player Stats")
+	float MaxShield = 100.f;
+	
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Shield, Category = "Player Stats")
+	float Shield = 100.f;
+	
+	UFUNCTION()
+	void OnRep_Shield(float LastShield);
 	
 	UPROPERTY()
 	ABlasterPlayerController* BlasterPlayerController;

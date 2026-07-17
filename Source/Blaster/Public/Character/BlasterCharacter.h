@@ -54,6 +54,9 @@ public:
 	
 	void UpdateHUDHealth();
 	void UpdateHUDShield();
+	void UpdateHUDAmmo();
+	
+	void SpawnDefaultWeapon();
 	
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> InputMapping;
@@ -288,5 +291,12 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> AttachedGrenade;
+	
+	/*
+	 * Default Weapon
+	 */
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AWeapon> DefaultWeaponClass;
 	
 };

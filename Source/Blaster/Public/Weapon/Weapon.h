@@ -79,6 +79,8 @@ public:
 	
 	void EnableCustomDepth(bool bEnable);
 	
+	bool bDestroyWeapon = false;
+	
 	virtual void Tick(float DeltaTime) override;
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	virtual void OnRep_Owner() override;

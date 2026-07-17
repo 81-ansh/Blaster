@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "BlasterPlayerController.generated.h"
 
+class UCharacterOverlay;
 class ABlasterGameMode;
 class ABlasterHUD;
 
@@ -89,5 +90,16 @@ private:
 	
 	UFUNCTION()
 	void OnRep_MatchState();
+	
+	UPROPERTY()
+	UCharacterOverlay* CharacterOverlay;
+
+	float HUDCarriedAmmo;
+	bool bInitializeCarriedAmmo = false;
+
+	float HUDWeaponAmmo;
+	bool bInitializeWeaponAmmo = false;
+
+	void PollInit();
 	
 };

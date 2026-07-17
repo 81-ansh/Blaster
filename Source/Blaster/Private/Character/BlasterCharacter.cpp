@@ -179,14 +179,7 @@ void ABlasterCharacter::EquipButtonPressed()
 	if (bDisableGameplay) return;
 	if (Combat)
 	{
-		if (HasAuthority())
-		{
-			Combat->EquipWeapon(OverlappingWeapon);									// Server — equip directly
-		}
-		else
-		{
-			ServerEquipButtonPressed();												// Client — send equip request to server via RPC
-		}
+		ServerEquipButtonPressed();
 	}
 }
 

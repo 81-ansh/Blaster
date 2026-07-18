@@ -271,15 +271,15 @@ void ABlasterCharacter::OnRep_ReplicatedMovement()
 
 void ABlasterCharacter::Elim()
 {
-	if (Combat && Combat->EquippedWeapon)
+	if (Combat)
 	{
-		if (Combat->EquippedWeapon->bDestroyWeapon)
+		if (Combat->EquippedWeapon)
 		{
-			Combat->EquippedWeapon->Destroy();
+			DropOrDestroyWeapon(Combat->EquippedWeapon);
 		}
-		else
+		if (Combat->SecondaryWeapon)
 		{
-			Combat->EquippedWeapon->Dropped();
+			DropOrDestroyWeapon(Combat->SecondaryWeapon);
 		}
 	}
 	MulticastElim();
@@ -687,6 +687,19 @@ void ABlasterCharacter::PlayElimMontage()
 	if (AnimInstance && ElimMontage)
 	{
 		AnimInstance->Montage_Play(ElimMontage);
+	}
+}
+
+void ABlasterCharacter::DropOrDestroyWeapon(AWeapon* Weapon)
+{
+	if (Weapon == nullptr) return;
+	if (Weapon->bDestroyWeapon)
+	{
+		Weapon->Destroy();
+	}
+	else
+	{
+		Weapon->Dropped();
 	}
 }
 

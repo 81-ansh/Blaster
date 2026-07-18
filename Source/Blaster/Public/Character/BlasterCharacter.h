@@ -136,6 +136,7 @@ protected:
 	virtual void Jump() override;
 	void PlayHitReactMontage();
 	void PlayElimMontage();
+	void DropOrDestroyWeapon(AWeapon* Weapon);
 	
 	// Poll for any relevant class and initialize HUD
 	void PollInit();

@@ -71,6 +71,10 @@ protected:
 	UFUNCTION(Client, Reliable)
 	void ClientJoinMidgame(FName InMatchState, float InWarmupTime, float InMatchTime, float InCooldownTime, float InLevelStartingTime);
 	
+	void HighPingWarning();
+	void StopHighPingWarning();
+	void CheckPing(float DeltaSeconds);
+	
 private:
 	
 	UPROPERTY()
@@ -101,5 +105,18 @@ private:
 	bool bInitializeWeaponAmmo = false;
 
 	void PollInit();
+	
+	float HighPingRunningTime = 0.f;	// Time since the last warning shown
+	
+	UPROPERTY(EditAnywhere)
+	float HighPingDuration = 5.f;		// Animation Duration
+	
+	float PingAnimationRunningTime = 0.f;
+	
+	UPROPERTY(EditAnywhere)
+	float CheckPingFrequency = 20.f;	// Time interval in which ping will be checked
+	
+	UPROPERTY(EditAnywhere)
+	float HighPingThreshold = 50.f;		// The limit after which will be considered HighPing
 	
 };

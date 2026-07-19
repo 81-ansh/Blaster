@@ -40,13 +40,10 @@ void AWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	if (HasAuthority())
-	{
-		AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);		// enable collision on server
-		AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);		// detect when pawns overlap the pickup sphere
-		AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);	// bind overlap event to handle pickup when a pawn enters the sphere
-		AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);	// bind end overlap event
-	}
+	AreaSphere->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);		// enable collision on server
+	AreaSphere->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);		// detect when pawns overlap the pickup sphere
+	AreaSphere->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnSphereOverlap);	// bind overlap event to handle pickup when a pawn enters the sphere
+	AreaSphere->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnSphereEndOverlap);	// bind end overlap event
 	if (PickupWidget)
 	{
 		PickupWidget->SetVisibility(false);

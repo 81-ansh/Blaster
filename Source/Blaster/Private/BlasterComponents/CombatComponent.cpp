@@ -281,6 +281,7 @@ void UCombatComponent::Fire()
 	if (CanFire() && EquippedWeapon)
 	{
 		ServerFire(HitTarget);
+		LocalFire(HitTarget);
 		CrosshairShootingFactor = 0.75f;
 		StartFireTimer();
 	}
@@ -353,6 +354,12 @@ void UCombatComponent::TraceUnderCrosshairs(FHitResult& TraceHitResult)
 }
 
 void UCombatComponent::MulticastFire_Implementation(const FVector_NetQuantize& TraceHitTarget)
+{
+	if (Character && Character->IsLocallyControlled() && !Character->HasAuthority()) return;
+	LocalFire(TraceHitTarget);
+}
+
+void UCombatComponent::LocalFire(const FVector_NetQuantize& TraceHitTarget)
 {
 	if (EquippedWeapon == nullptr) return;
 	if (Character && CombatState == ECombatState::ECS_Reloading && EquippedWeapon->GetWeaponType() == EWeaponType::EWT_Shotgun)

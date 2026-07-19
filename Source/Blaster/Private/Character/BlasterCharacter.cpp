@@ -50,6 +50,7 @@ ABlasterCharacter::ABlasterCharacter()
 	GetMesh()->SetCollisionObjectType(ECC_SkeletalMesh);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Camera, ECR_Ignore);
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+	GetMesh()->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 850.f, 0.f);
 	
 	TurningInPlace = ETurningInPlace::ETIP_NotTurning;

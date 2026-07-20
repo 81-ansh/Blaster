@@ -56,6 +56,8 @@ public:
 	
 	void SetSpeeds(float InBaseSpeed, float InCrouchSpeed);
 	
+	bool bLocallyReloading = false;
+	
 protected:
 	
 	virtual void BeginPlay() override;

@@ -818,3 +818,9 @@ void ABlasterCharacter::RotateInPlace(float DeltaTime)
 		CalculateAO_Pitch();
 	}
 }
+
+bool ABlasterCharacter::IsLocallyReloading()
+{
+	if (Combat == nullptr) return false;
+	return Combat->bLocallyReloading;
+}

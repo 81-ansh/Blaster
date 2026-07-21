@@ -15,6 +15,7 @@
 #include "Interfaces/InteractWithCrosshairInterface.h"
 #include "BlasterCharacter.generated.h"
 
+class UBoxComponent;
 class AWeapon;
 class UAnimMontage;
 class ABlasterPlayerState;
@@ -145,6 +146,64 @@ protected:
 	
 	UFUNCTION()
 	void ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatorController, AActor* DamageCauser);
+	
+	/*
+	 * Hit Boxes used for server side rewind
+	 */
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> head;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> pelvis;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> spine_02;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> spine_03;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> upperarm_l;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> upperarm_r;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> lowerarm_l;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> lowerarm_r;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> hand_l;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> hand_r;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> backpack;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> blanket;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> thigh_l;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> thigh_r;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> calf_l;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> calf_r;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> foot_l;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> foot_r;
 
 private:
 	

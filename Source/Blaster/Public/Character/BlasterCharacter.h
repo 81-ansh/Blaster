@@ -23,6 +23,7 @@ class ABlasterPlayerController;
 class USpringArmComponent;
 class UWidgetComponent;
 class UBuffComponent;
+class ULagCompensationComponent;
 
 UCLASS()
 class BLASTER_API ABlasterCharacter : public ACharacter, public IInteractWithCrosshairInterface
@@ -222,11 +223,18 @@ private:
 	UFUNCTION()
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 	
+	/*
+	 * Blaster Components
+	 */
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	UCombatComponent* Combat;
 	
 	UPROPERTY(VisibleAnywhere)
 	UBuffComponent* Buff;
+	
+	UPROPERTY(VisibleAnywhere)
+	ULagCompensationComponent* LagCompensation;
 	
 	UFUNCTION(Server, Reliable)
 	void ServerEquipButtonPressed();

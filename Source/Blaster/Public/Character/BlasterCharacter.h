@@ -94,6 +94,9 @@ public:
 	UPROPERTY()
 	ABlasterPlayerState* BlasterPlayerState;
 	
+	UPROPERTY()
+	TMap<FName, UBoxComponent*> HitCollisionBoxes;
+	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
 	bool IsAiming();

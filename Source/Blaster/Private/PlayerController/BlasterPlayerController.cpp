@@ -325,8 +325,10 @@ void ABlasterPlayerController::ClientReportServerTime_Implementation(float TimeO
 	// RoundTripTime is found by difference of Client's current time and the time it send request
 	float RoundTripTime = GetWorld()->GetTimeSeconds() - TimeOfClientRequest;
 	
+	SingleTripTime = 0.5f * RoundTripTime;
+	
 	// CurrentServerTime is calculated by taking the time when the server received the client's request and adding half of the Round Trip Time
-	float CurrentServerTime = TimeServerReceivedClientRequest + (0.5f * RoundTripTime);
+	float CurrentServerTime = TimeServerReceivedClientRequest + SingleTripTime;
 	
 	// Difference in Server and Client time
 	ClientServerDelta = CurrentServerTime - GetWorld()->GetTimeSeconds();

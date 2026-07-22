@@ -30,9 +30,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> HitSound;
 	
-	UPROPERTY(EditAnywhere)
-	float Damage = 20.f;
-	
 private:
 		
 	UPROPERTY(EditAnywhere)

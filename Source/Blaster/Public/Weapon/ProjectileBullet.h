@@ -18,6 +18,10 @@ public:
 	
 	AProjectileBullet();
 	
+#if WITH_EDITOR		// Only for editor
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
+	
 protected:
 	
 	virtual void BeginPlay() override;

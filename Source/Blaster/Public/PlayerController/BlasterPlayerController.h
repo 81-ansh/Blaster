@@ -10,6 +10,8 @@ class UCharacterOverlay;
 class ABlasterGameMode;
 class ABlasterHUD;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHighPingDelegate, bool, bPingTooHigh);
+
 /**
  * 
  */
@@ -40,6 +42,8 @@ public:
 	void HandleCooldown();
 	
 	float SingleTripTime = 0.f;
+	
+	FHighPingDelegate HighPingDelegate;
 	
 protected:
 	
@@ -120,5 +124,8 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float HighPingThreshold = 50.f;		// The limit after which will be considered HighPing
+	
+	UFUNCTION(Server, Reliable)
+	void ServerReportPingStatus(bool bHighPing);	// Checking if ping is too high
 	
 };

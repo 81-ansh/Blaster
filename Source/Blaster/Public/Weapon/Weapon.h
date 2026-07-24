@@ -134,6 +134,15 @@ protected:
 	UFUNCTION()
 	void OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
+	UFUNCTION()
+	void OnPingTooHigh(bool bPingTooHigh);
+	
+	UPROPERTY()
+	ABlasterCharacter* BlasterOwnerCharacter;
+	
+	UPROPERTY()
+	ABlasterPlayerController* BlasterOwnerController;
+	
 	/*
 	 * Trace end with scatter
 	 */
@@ -147,14 +156,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(Replicated, EditAnywhere)
 	bool bUseServerSideRewind = false;
-	
-	UPROPERTY()
-	ABlasterCharacter* BlasterOwnerCharacter;
-	
-	UPROPERTY()
-	ABlasterPlayerController* BlasterOwnerController;
 
 private:
 	

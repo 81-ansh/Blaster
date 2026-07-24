@@ -42,6 +42,7 @@ public:
 	void PlayReloadMontage();
 	void CancelReloadMontage();
 	void PlayThrowGrenadeMontage();
+	void PlaySwapMontage();
 	virtual void OnRep_ReplicatedMovement() override;
 	void Elim();
 	virtual void Destroyed() override;
@@ -96,6 +97,8 @@ public:
 	
 	UPROPERTY()
 	TMap<FName, UBoxComponent*> HitCollisionBoxes;
+	
+	bool bFinishedSwapping = false;
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
@@ -269,6 +272,9 @@ private:
 	
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<UAnimMontage> ThrowGrenadeMontage;
+	
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> SwapMontage;
 
 	void HideCharacterIfCameraClose();
 	

@@ -6,9 +6,11 @@
 #include "GameFramework/PlayerController.h"
 #include "BlasterPlayerController.generated.h"
 
+class UReturnToMainMenu;
 class UCharacterOverlay;
 class ABlasterGameMode;
 class ABlasterHUD;
+class UInputAction;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FHighPingDelegate, bool, bPingTooHigh);
 
@@ -49,6 +51,10 @@ protected:
 	
 	virtual void BeginPlay() override;
 	void SetHUDTime();
+	
+	virtual void SetupInputComponent() override;
+	
+	void ShowReturnToMainMenu();
 	
 	/*
 	 * Sync time between client and server
@@ -127,5 +133,20 @@ private:
 	
 	UFUNCTION(Server, Reliable)
 	void ServerReportPingStatus(bool bHighPing);	// Checking if ping is too high
+	
+	/*
+	 * Return To Main Menu
+	 */
+	
+	UPROPERTY(EditAnywhere, Category = "HUD")
+	TSubclassOf<UUserWidget> ReturnToMainMenuWidget;	// Class that will be created
+	
+	UPROPERTY()
+	TObjectPtr<UReturnToMainMenu> ReturnToMainMenu;		// Storing the Widget after creating
+	
+	bool bReturnToMainMenuOpen = false;					// Is menu open or not
+	
+	UPROPERTY(EditAnywhere, Category = "HUD")
+	TObjectPtr<UInputAction> QuitAction;
 	
 };

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PlayerController/BlasterPlayerController.h"
+#include "EnhancedInputComponent.h"
 #include "Character/BlasterCharacter.h"
 #include "Components/Image.h"
 #include "Components/ProgressBar.h"
@@ -12,6 +13,7 @@
 #include "HUD/Announcement.h"
 #include "HUD/BlasterHUD.h"
 #include "HUD/CharacterOverlay.h"
+#include "HUD/ReturnToMainMenu.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
@@ -185,6 +187,38 @@ void ABlasterPlayerController::SetHUDTime()
 		}
 	}
 	CountdownInt = SecondsLeft;			// Store last displayed second
+}
+
+void ABlasterPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+ 
+	if (InputComponent == nullptr) return;
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInputComponent->BindAction(QuitAction, ETriggerEvent::Completed, this, &ABlasterPlayerController::ShowReturnToMainMenu);
+	}
+}
+
+void ABlasterPlayerController::ShowReturnToMainMenu()
+{
+	if (ReturnToMainMenuWidget == nullptr) return;
+	if (ReturnToMainMenu == nullptr)
+	{
+		ReturnToMainMenu = CreateWidget<UReturnToMainMenu>(this, ReturnToMainMenuWidget);
+	}
+	if (ReturnToMainMenu)
+	{
+		bReturnToMainMenuOpen = !bReturnToMainMenuOpen;
+		if (bReturnToMainMenuOpen)
+		{
+			ReturnToMainMenu->MenuSetup();
+		}
+		else
+		{
+			ReturnToMainMenu->MenuTeardown();
+		}
+	}
 }
 
 void ABlasterPlayerController::OnPossess(APawn* InPawn)

@@ -15,6 +15,8 @@
 #include "Interfaces/InteractWithCrosshairInterface.h"
 #include "BlasterCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLeftGame);
+
 class UBoxComponent;
 class AWeapon;
 class UAnimMontage;
@@ -44,11 +46,11 @@ public:
 	void PlayThrowGrenadeMontage();
 	void PlaySwapMontage();
 	virtual void OnRep_ReplicatedMovement() override;
-	void Elim();
+	void Elim(bool bPlayerLeftGame);
 	virtual void Destroyed() override;
 	
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastElim();
+	void MulticastElim(bool bPlayerLeftGame);
 	
 	UPROPERTY(Replicated)
 	bool bDisableGameplay = false;
@@ -99,6 +101,11 @@ public:
 	TMap<FName, UBoxComponent*> HitCollisionBoxes;
 	
 	bool bFinishedSwapping = false;
+	
+	UFUNCTION(Server, Reliable)
+	void ServerLeaveGame();
+	
+	FOnLeftGame OnLeftGame;
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
@@ -326,6 +333,8 @@ private:
 	float ElimDelay = 3.f;
 	
 	void ElimTimerFinished();
+	
+	bool bLeftGame = false;
 	
 	/*
 	 * Dissolve Effect

@@ -116,6 +116,7 @@ public:
 	FORCEINLINE EWeaponType GetWeaponType() const { return WeaponType; }
 	FORCEINLINE int32 GetAmmo() const { return Ammo; }
 	FORCEINLINE int32 GetMagCapacity() const { return MagCapacity; }
+	FORCEINLINE float GetHeadShotDamage() const { return HeadShotDamage; }
 	FORCEINLINE float GetDamage() const { return Damage; }
 	bool IsEmpty();
 	bool IsFull();
@@ -152,6 +153,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Scatter")
 	float SphereRadius = 75.f;
+	
+	UPROPERTY(EditAnywhere)
+	float HeadShotDamage = 40.f;
 	
 	UPROPERTY(EditAnywhere)
 	float Damage = 20.f;

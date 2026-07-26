@@ -308,10 +308,6 @@ void AWeapon::Fire(const FVector& HitTarget)
 					SocketTransform.GetLocation(),
 					SocketTransform.GetRotation().Rotator()
 				);
-				if (GEngine)
-				{
-					GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Casing Spawned"));
-				}
 			}
 		}
 	}

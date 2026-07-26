@@ -107,6 +107,12 @@ public:
 	
 	FOnLeftGame OnLeftGame;
 	
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastGainedTheLead();
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastLostTheLead();
+	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
 	bool IsAiming();
@@ -362,7 +368,7 @@ private:
 	void StartDissolve();
 	
 	/*
-	 * Elim Bot
+	 * Elim Effects
 	 */
 	
 	UPROPERTY(EditAnywhere)
@@ -373,6 +379,12 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<USoundBase> ElimBotSound;
+	
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UNiagaraSystem> CrownSystem;
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UNiagaraComponent> CrownComponent;
 	
 	/*
 	 * Grenade

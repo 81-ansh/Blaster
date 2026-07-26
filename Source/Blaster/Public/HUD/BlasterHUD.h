@@ -6,9 +6,11 @@
 #include "GameFramework/HUD.h"
 #include "BlasterHUD.generated.h"
 
+class UElimAnnouncement;
 class UAnnouncement;
 class UTexture2D;
 class UCharacterOverlay;
+class APlayerController;
 
 USTRUCT(BlueprintType)
 struct FHUDPackage
@@ -59,6 +61,7 @@ public:
 	TObjectPtr<UAnnouncement> Announcement;
 	
 	void AddAnnouncement();
+	void AddElimAnnouncement(FString Attacker, FString Victim);
 	
 	virtual void DrawHUD() override;
 	FORCEINLINE void SetHUDPackage(const FHUDPackage& Package) { HUDPackage = Package; }
@@ -69,10 +72,16 @@ protected:
 	
 private:
 	
+	UPROPERTY()
+	APlayerController* OwningPlayer;
+	
 	FHUDPackage HUDPackage;
 	
 	void DrawCrosshair(UTexture2D* Texture, FVector2D ViewportCenter, FVector2D Spread, FLinearColor CrosshairColor);
 	
 	UPROPERTY(EditAnywhere)
 	float CrosshairSpreadMax = 16.f;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UElimAnnouncement> ElimAnnouncementClass;
 };

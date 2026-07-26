@@ -42,6 +42,7 @@ public:
 	void OnMatchStateSet(FName State);
 	void HandleMatchStart();
 	void HandleCooldown();
+	void BroadcastElim(APlayerState* Attacker, APlayerState* Victim);
 	
 	float SingleTripTime = 0.f;
 	
@@ -86,6 +87,9 @@ protected:
 	void HighPingWarning();
 	void StopHighPingWarning();
 	void CheckPing(float DeltaSeconds);
+	
+	UFUNCTION(Client, Reliable)
+	void ClientElimAnnouncement(APlayerState* Attacker, APlayerState* Victim);
 	
 private:
 	

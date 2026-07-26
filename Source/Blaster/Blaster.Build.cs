@@ -7,6 +7,7 @@ public class Blaster : ModuleRules
 	public Blaster(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+		bUseUnity = false;
 	
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "UMG", "Niagara", "SteamSockets", "MultiplayerSessions", "OnlineSubsystem", "OnlineSubsystemSteam" });
 

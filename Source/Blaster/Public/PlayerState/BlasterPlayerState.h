@@ -35,7 +35,7 @@ public:
 	void AddToDeath(int32 DeathAmount);
 	
 	FORCEINLINE ETeam GetTeam() const { return Team; }
-	FORCEINLINE void SetTeam(ETeam TeamToSet) { Team = TeamToSet; }
+	void SetTeam(ETeam TeamToSet);
 	
 private:
 	
@@ -48,7 +48,10 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_Death)
 	int32 Deaths;
 	
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_Team)
 	ETeam Team = ETeam::ET_NoTeam;
+	
+	UFUNCTION()
+	void OnRep_Team();
 	
 };

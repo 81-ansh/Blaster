@@ -13,6 +13,7 @@
 #include "Components/TimelineComponent.h"
 #include "GameFramework/Character.h"
 #include "Interfaces/InteractWithCrosshairInterface.h"
+#include "BlasterTypes/Team.h"
 #include "BlasterCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLeftGame);
@@ -112,6 +113,8 @@ public:
 	
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastLostTheLead();
+	
+	void SetTeamColor(ETeam Team);
 	
 	void SetOverlappingWeapon(AWeapon* Weapon);
 	bool IsWeaponEquipped();
@@ -359,13 +362,32 @@ private:
 	TObjectPtr<UMaterialInstanceDynamic> DynamicDissolveMaterialInstance;
 	
 	// Material Instance set on the Blueprint
-	UPROPERTY(EditAnywhere, Category = "Elim")
+	UPROPERTY(VisibleAnywhere, Category = "Elim")
 	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
 	
 	UFUNCTION()
 	void UpdateDissolveMaterial(float DissolveValue);
 	
 	void StartDissolve();
+	
+	/*
+	 * Team Colors
+	 */
+	
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstance> RedDissolveMatInst;
+	
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstance> RedMaterial;
+	
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstance> BlueDissolveMatInst;
+	
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstance> BlueMaterial;
+	
+	UPROPERTY(EditAnywhere, Category = "Elim")
+	TObjectPtr<UMaterialInstance> OriginalMaterial;
 	
 	/*
 	 * Elim Effects

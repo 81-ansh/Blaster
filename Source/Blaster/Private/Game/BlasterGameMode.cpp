@@ -65,7 +65,7 @@ void ABlasterGameMode::OnMatchStateSet()
 		ABlasterPlayerController* BlasterPlayer = Cast<ABlasterPlayerController>(*It);				// casting them to ABlasterPlayerController
 		if (BlasterPlayer)
 		{
-			BlasterPlayer->OnMatchStateSet(MatchState);												// Setting MatchState to every player controller
+			BlasterPlayer->OnMatchStateSet(MatchState, bTeamsMatch);								// Setting MatchState to every player controller
 		}
 	}
 }

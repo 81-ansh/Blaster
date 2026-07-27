@@ -45,6 +45,8 @@ public:
 	
 	float LevelStartingTime = 0.f;
 	
+	bool bTeamsMatch = false;
+	
 	FORCEINLINE float GetCountdownTime() const { return CountdownTime; }
 	
 protected:

@@ -39,10 +39,14 @@ public:
 	
 	virtual float GetServerTime();				// Synced with server world clock
 	virtual void ReceivedPlayer() override;		// Sync with server as soon as possible
-	void OnMatchStateSet(FName State);
-	void HandleMatchStart();
+	void OnMatchStateSet(FName State, bool bTeamsMatch = false);
+	void HandleMatchStart(bool bTeamsMatch = false);
 	void HandleCooldown();
 	void BroadcastElim(APlayerState* Attacker, APlayerState* Victim);
+	void HideTeamScores();
+	void InitTeamScores();
+	void SetHUDRedTeamScore(int32 RedScore);
+	void SetHUDBlueTeamScore(int32 BlueScore);
 	
 	float SingleTripTime = 0.f;
 	
@@ -90,6 +94,12 @@ protected:
 	
 	UFUNCTION(Client, Reliable)
 	void ClientElimAnnouncement(APlayerState* Attacker, APlayerState* Victim);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_ShowTeamScores)
+	bool bShowTeamScores = false;
+	
+	UFUNCTION()
+	void OnRep_ShowTeamScores();
 	
 private:
 	

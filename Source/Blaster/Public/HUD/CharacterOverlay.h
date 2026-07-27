@@ -36,6 +36,12 @@ public:
 	TObjectPtr<UTextBlock> ScoreAmount;
 	
 	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> RedTeamScore;
+	
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UTextBlock> BlueTeamScore;
+	
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> DeathAmount;
 	
 	UPROPERTY(meta = (BindWidget))

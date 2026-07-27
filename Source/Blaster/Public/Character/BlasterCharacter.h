@@ -16,6 +16,7 @@
 #include "BlasterTypes/Team.h"
 #include "BlasterCharacter.generated.h"
 
+class ABlasterGameMode;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLeftGame);
 
 class UBoxComponent;
@@ -421,5 +422,8 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AWeapon> DefaultWeaponClass;
+	
+	UPROPERTY()
+	ABlasterGameMode* BlasterGameMode;
 	
 };

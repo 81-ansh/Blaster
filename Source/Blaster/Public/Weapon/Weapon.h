@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "WeaponTypes.h"
+#include "BlasterTypes/Team.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
@@ -210,5 +211,8 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	EWeaponType WeaponType;
+	
+	UPROPERTY(EditAnywhere)
+	ETeam Team;
 		
 };

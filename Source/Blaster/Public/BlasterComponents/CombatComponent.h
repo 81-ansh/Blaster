@@ -246,4 +246,6 @@ private:
 	void UpdateAmmoValues();
 	void UpdateShotgunAmmoValues();
 	
+	bool bHoldingTheFlag = false;
+	
 };

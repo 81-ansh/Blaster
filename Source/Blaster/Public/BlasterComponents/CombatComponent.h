@@ -253,4 +253,7 @@ private:
 	UFUNCTION()
 	void OnRep_HoldingTheFlag();
 	
+	UPROPERTY()
+	AWeapon* TheFlag; 
+	
 };

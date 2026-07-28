@@ -20,6 +20,13 @@ public:
 	
 	AFlag();
 	
+	virtual void Dropped() override;
+	
+protected:
+	
+	virtual void OnEquipped() override;
+	virtual void OnDropped() override;
+	
 private:
 	
 	UPROPERTY(VisibleAnywhere)

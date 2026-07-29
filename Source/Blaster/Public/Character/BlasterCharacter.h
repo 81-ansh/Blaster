@@ -166,6 +166,8 @@ protected:
 	void PlayHitReactMontage();
 	void PlayElimMontage();
 	void DropOrDestroyWeapon(AWeapon* Weapon);
+	void OnPlayerStateInitialized();
+	void SetSpawnPoint();
 	
 	// Poll for any relevant class and initialize HUD
 	void PollInit();

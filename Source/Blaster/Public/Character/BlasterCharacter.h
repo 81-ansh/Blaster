@@ -144,6 +144,7 @@ public:
 	FORCEINLINE bool IsHoldingTheFlag() const;
 	bool IsLocallyReloading();
 	ETeam GetTeam();
+	void SetHoldingTheFlag(bool bHolding);
 
 protected:
 	

@@ -21,9 +21,16 @@ public:
 	AFlag();
 	
 	virtual void Dropped() override;
+	void ResetFlag();
+	
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastResetFlag();
+	
+	FORCEINLINE FTransform GetInitialTransform() const { return InitialTransform; }
 	
 protected:
 	
+	virtual void BeginPlay() override;
 	virtual void OnEquipped() override;
 	virtual void OnDropped() override;
 	
@@ -31,5 +38,7 @@ private:
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UStaticMeshComponent> FlagMesh;
+	
+	FTransform InitialTransform;
 	
 };
